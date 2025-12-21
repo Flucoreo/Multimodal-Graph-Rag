@@ -1,3 +1,8 @@
+"""
+Transcript
+"""
+
+from pathlib import Path
 from youtube_transcript_api import YouTubeTranscriptApi
 
 
@@ -21,12 +26,15 @@ def get_transcript(url: str):
         fetched_transcript = ytt_api.fetch(video_id)
     except Exception:
         print("Invalid video URL")
-        return
+        return None
 
     return fetched_transcript
 
 
 def main():
+    """
+    Main
+    """
 
     # get the video url from the user
     video_url = input("Youtube Video URL: ")
@@ -34,11 +42,28 @@ def main():
         print("Invalid url")
         return
 
+    content = []
+
     transcript = get_transcript(video_url)
     for snippet in transcript:
-        print(snippet.text)
+        # print(snippet.text)
+        content.append(snippet.text)
 
-    #https://www.youtube.com/watch?v=yqrp2uK9LY4
+    content = "\n".join(content)
+    file_path = Path('transcript.txt')
+    file_path.write_text(content, encoding='utf-8')
+
 
 if __name__ == "__main__":
     main()
+
+
+
+# youtube-transcript-api==1.2.3
+# openai==2.9.0
+# langchain
+# pip install langchain-community unstructured
+# pip install langchain-text-splitters
+# sentence-transformers
+# pip install langchain-huggingface
+# pip install langchain redis
